@@ -29,7 +29,7 @@ RUN apk update && apk add --no-cache git \
 # Grab old versions from previous version
 ############################
 ARG PG_VERSION
-FROM timescale/timescaledb:${PREV_TS_VERSION}-pg${PG_VERSION}${PREV_EXTRA} AS oldversions
+FROM timescale/timescaledb:${PREV_TS_VERSION}-pg12 AS oldversions
 # Remove update files, mock files, and all but the last 5 .so/.sql files
 RUN rm -f $(pg_config --sharedir)/extension/timescaledb--*--*.sql \
     && rm -f $(pg_config --sharedir)/extension/timescaledb*mock*.sql \
@@ -41,7 +41,7 @@ RUN rm -f $(pg_config --sharedir)/extension/timescaledb--*--*.sql \
 # Now build image and copy in tools
 ############################
 ARG PG_VERSION
-FROM postgres:${PG_VERSION}
+FROM postgres:12
 ARG OSS_ONLY
 
 LABEL maintainer="Timescale https://www.timescale.com"
