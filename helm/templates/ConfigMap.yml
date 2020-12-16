@@ -1,0 +1,17 @@
+{{- $AppName :=  .Values.appname -}}
+{{- $Appnamespace := .Values.appnamespaces -}}
+{{- $Appwd :=  .Values.configmap.pgpasswd -}}
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $AppName }}-config
+  namespace: {{ $Appnamespace }}
+  labels:
+    app: {{ $AppName }}
+data:
+  POSTGRES_PASSWORD: {{ $Appwd }}
+  
+---

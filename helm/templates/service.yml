@@ -1,0 +1,22 @@
+{{- $AppName :=  .Values.appname -}}
+{{- $Appnamespace := .Values.appnamespaces -}}
+{{- $Apptype :=  .Values.service.type -}}
+{{- $Appport := .Values.service.port -}}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $AppName }}
+  namespace: {{ $Appnamespace }}
+  labels:
+    app: {{ $AppName }}
+spec:
+  type: {{ $Apptype }}
+  ports:
+   - port: {{ $Appport }}
+  selector:
+   app: {{ $AppName }}
+   
+---

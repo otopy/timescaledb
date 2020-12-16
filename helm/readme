@@ -1,0 +1,22 @@
+To solve this problem do it:
+
+    Set NFS export dir:
+    "nfs/main *(rw,sync,no_subtree_check,no_root_squash)"
+    And then restart NFS server:
+    sudo /etc/init.d/nfs-kernel-server restart
+    or
+    sudo exportfs -arv
+    Set NFS volume like this:
+
+  nfs:
+    server: ***
+    path: "nfs/main/data"
+
+    Update your entity configuration:
+
+         volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+              readOnly: false
+
+Very important to export nfs/main and create volume inside of the folder nfs/main/data.

@@ -1,0 +1,38 @@
+{{- $AppName :=  .Values.appname -}}
+{{- $Appnamespace := .Values.appnamespaces -}}
+{{- $Appport := .Values.service.port -}}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $AppName }}
+  namespace: {{ $Appnamespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $AppName }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ $AppName }}
+    spec:
+      containers:
+        - name: {{ $AppName }}
+          image: {{ include "firstimage" . }}
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: {{ $Appport }}
+          envFrom:
+            - configMapRef:
+                name: {{ $AppName }}-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: {{ $AppName }}-pv-claim
+---

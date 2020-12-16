@@ -1,0 +1,19 @@
+appname: timescaledb
+appnamespaces: default
+
+service:
+  type: NodePort
+  port: 5432
+
+configmap:
+  pgpasswd: password
+  
+volume:
+  storageClassName: managed-nfs-storage
+  accessModes: ReadWriteMany
+  storage: 3Gi
+  
+timescale:
+  registry: timescale
+  repository: timescaledb
+  tag: 1.7.4-pg12
